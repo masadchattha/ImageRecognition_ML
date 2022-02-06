@@ -32,7 +32,7 @@
                     <navigationItem key="navigationItem" title="Image Recognition" id="YXs-mA-qFd">
                         <barButtonItem key="rightBarButtonItem" title="Item" image="camera.fill" catalog="system" id="s2g-TJ-VMV">
                             <connections>
-                                <action selector="cameraTapped:" destination="BYZ-38-t0r" id="9kF-rU-9ih"/>
+                                <action selector="presentPicker:" destination="BYZ-38-t0r" id="9yN-Iu-1jS"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>

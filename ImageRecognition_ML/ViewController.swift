@@ -20,7 +20,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
         //ImagePicker
         imagePicker.delegate = self
-        imagePicker.sourceType = .camera
+        //Pick Image from Camera
+//        imagePicker.sourceType = .camera
+        //Pick Image from Photos
+        imagePicker.sourceType = .photoLibrary
         imagePicker.allowsEditing = false
     }
 
@@ -35,7 +38,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     // MARK: - IBActions
 
-    @IBAction func cameraTapped(_ sender: UIBarButtonItem) {
+    @IBAction func presentPicker(_ sender: UIBarButtonItem) {
         present(imagePicker, animated: true, completion: nil)
     }
     
