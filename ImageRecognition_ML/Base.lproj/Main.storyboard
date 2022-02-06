@@ -30,6 +30,11 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Image Recognition" id="YXs-mA-qFd">
+                        <barButtonItem key="leftBarButtonItem" title="Item" image="photo" catalog="system" id="kGl-GA-ItZ">
+                            <connections>
+                                <action selector="presentPhotoPicker:" destination="BYZ-38-t0r" id="P4D-HV-Lf4"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Item" image="camera.fill" catalog="system" id="s2g-TJ-VMV">
                             <connections>
                                 <action selector="presentPicker:" destination="BYZ-38-t0r" id="9yN-Iu-1jS"/>
@@ -65,6 +70,7 @@
     </scenes>
     <resources>
         <image name="camera.fill" catalog="system" width="128" height="94"/>
+        <image name="photo" catalog="system" width="128" height="93"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
