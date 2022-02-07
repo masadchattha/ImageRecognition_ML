@@ -7,6 +7,8 @@
 
 import UIKit
 import PhotosUI
+import CoreML
+import Vision
 
 class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
@@ -30,7 +32,12 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         //Get captured image and use it
         if let userPickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             imageView.image = userPickedImage
+            
+            let ciimage = ciimageConverter(userPickedImage)
+            detect(image: ciimage)
+            
         }
+        
         dismiss(animated: true, completion: nil)
     }
     
@@ -52,9 +59,48 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         present(picker, animated: true, completion: nil)
     }
     
+    
+    // MARK: - Perform CoreML
+    private func detect(image: CIImage) {
+        guard let model = try? VNCoreMLModel(for: Inceptionv3().model) else {
+            fatalError("Loading CoreML Model Failed.")
+        }
+        
+        let request = VNCoreMLRequest(model: model) { request, error in
+            guard let results = request.results as? [VNClassificationObservation] else {
+                fatalError("Model failed to process Image.")
+            }
+            
+            print(results)
+            if let firstResult = results.first {
+                if firstResult.identifier.contains("hotdog") {
+                    self.navigationItem.title = "Hotdog!"
+                } else {
+                    self.navigationItem.title = "Not Hotdog!"
+                }
+            }
+        }
+        
+        let handler = VNImageRequestHandler(ciImage: image)
+        do {
+            try handler.perform([request])
+        } catch {
+            print(error)
+        }
+    }
+    
+    //UIImage to CIImage Converter
+    func ciimageConverter(_ selectedImage: UIImage) -> CIImage {
+        guard let ciimage = CIImage(image: selectedImage) else {
+            fatalError("Couldn't Convert UIImage to CIImage")
+        }
+        
+        return ciimage
+    }
+
 }
 
-// MARK: - [Extension] Photo Picker
+// MARK: - [Extension] PHPickerViewControllerDelegate, Pick One Image from Photos
 
 extension ViewController: PHPickerViewControllerDelegate {
     
@@ -69,6 +115,9 @@ extension ViewController: PHPickerViewControllerDelegate {
                 DispatchQueue.main.async {
                     guard let self = self, let image = image as? UIImage, self.imageView.image == previousImage else { return }
                     self.imageView.image = image
+                    
+                    let ciimage = self.ciimageConverter(image)
+                    self.detect(image: ciimage)
                 }
             }
         }
