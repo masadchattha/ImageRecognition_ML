@@ -39,6 +39,41 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		AD25A5B22C527BD600865E18 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				DCDED56527AF631300F87112 /* AppDelegate.swift */,
+				DCDED56727AF631300F87112 /* SceneDelegate.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		AD25A5B32C527BE500865E18 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				DCDED57027AF631400F87112 /* LaunchScreen.storyboard */,
+				DCDED56B27AF631300F87112 /* Main.storyboard */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		AD25A5B42C527BED00865E18 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				DCDED56927AF631300F87112 /* ViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		AD25A5B52C527C0100865E18 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				DCDED56E27AF631400F87112 /* Assets.xcassets */,
+				DC304CF727B007FD00C74618 /* Inceptionv3.mlmodel */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		DCDED55927AF631300F87112 = {
 			isa = PBXGroup;
 			children = (
@@ -58,13 +93,10 @@
 		DCDED56427AF631300F87112 /* ImageRecognition_ML */ = {
 			isa = PBXGroup;
 			children = (
-				DCDED56527AF631300F87112 /* AppDelegate.swift */,
-				DCDED56727AF631300F87112 /* SceneDelegate.swift */,
-				DCDED56927AF631300F87112 /* ViewController.swift */,
-				DCDED56B27AF631300F87112 /* Main.storyboard */,
-				DCDED56E27AF631400F87112 /* Assets.xcassets */,
-				DC304CF727B007FD00C74618 /* Inceptionv3.mlmodel */,
-				DCDED57027AF631400F87112 /* LaunchScreen.storyboard */,
+				AD25A5B22C527BD600865E18 /* App */,
+				AD25A5B32C527BE500865E18 /* View */,
+				AD25A5B42C527BED00865E18 /* Controller */,
+				AD25A5B52C527C0100865E18 /* Resources */,
 				DCDED57327AF631400F87112 /* Info.plist */,
 			);
 			path = ImageRecognition_ML;
