@@ -35,7 +35,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             
             let ciimage = ciimageConverter(userPickedImage)
             detect(image: ciimage)
-            
         }
         
         dismiss(animated: true, completion: nil)
@@ -62,16 +61,21 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     // MARK: - Perform CoreML
     private func detect(image: CIImage) {
-        guard let model = try? VNCoreMLModel(for: Inceptionv3().model) else {
+        let mlmodelconfiguration = MLModelConfiguration() //MLModelConfiguration is required for latest verions
+        //Initialize mlmodel with Vision CoreML coz our model is vision based
+        guard let model = try? VNCoreMLModel(for: Inceptionv3(configuration: mlmodelconfiguration).model) else {
             fatalError("Loading CoreML Model Failed.")
         }
         
+        //Prepare Request using VNCoreMLRequest - CoreML's vision request
         let request = VNCoreMLRequest(model: model) { request, error in
             guard let results = request.results as? [VNClassificationObservation] else {
                 fatalError("Model failed to process Image.")
             }
             
             print(results)
+            
+            //Get first result which have high percentage of image recognized & update Navigation Title
             if let firstResult = results.first {
                 if firstResult.identifier.contains("hotdog") {
                     self.navigationItem.title = "Hotdog!"
@@ -81,6 +85,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             }
         }
         
+        //Perform ML request
         let handler = VNImageRequestHandler(ciImage: image)
         do {
             try handler.perform([request])
@@ -90,7 +95,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     //UIImage to CIImage Converter
-    func ciimageConverter(_ selectedImage: UIImage) -> CIImage {
+    private func ciimageConverter(_ selectedImage: UIImage) -> CIImage {
         guard let ciimage = CIImage(image: selectedImage) else {
             fatalError("Couldn't Convert UIImage to CIImage")
         }
@@ -112,6 +117,8 @@ extension ViewController: PHPickerViewControllerDelegate {
         if let itemProvider = results.first?.itemProvider, itemProvider.canLoadObject(ofClass: UIImage.self) {
             let previousImage = imageView.image
             itemProvider.loadObject(ofClass: UIImage.self) { [weak self] image, error in
+                
+                //Update UI from background thread to main thread
                 DispatchQueue.main.async {
                     guard let self = self, let image = image as? UIImage, self.imageView.image == previousImage else { return }
                     self.imageView.image = image
